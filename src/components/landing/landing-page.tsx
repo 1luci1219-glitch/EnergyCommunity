@@ -145,7 +145,7 @@ function AnimatedSection({
   return (
     <motion.section
       id={id}
-      className={className}
+      className={cn(id && "scroll-mt-24", className)}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-120px" }}
@@ -591,22 +591,32 @@ export function LandingPage() {
   const [openFaq, setOpenFaq] = useState(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible?.target.id) {
-          setActiveSection(visible.target.id);
-        }
-      },
-      { rootMargin: "-35% 0px -55% 0px", threshold: 0.05 },
-    );
+    const updateActiveSection = () => {
+      const anchorY = window.scrollY + 112;
+      const sections = navLinks
+        .map((link) => {
+          const element = document.getElementById(link.id);
+          return element ? { id: link.id, top: element.offsetTop } : null;
+        })
+        .filter((section): section is { id: string; top: number } => Boolean(section))
+        .sort((a, b) => a.top - b.top);
 
-    navLinks.forEach((link) => {
-      const element = document.getElementById(link.id);
-      if (element) observer.observe(element);
-    });
+      const current =
+        sections.findLast((section) => section.top <= anchorY) ?? sections[0];
 
-    return () => observer.disconnect();
+      if (current) {
+        setActiveSection(current.id);
+      }
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
   }, []);
 
   return (
@@ -619,6 +629,7 @@ export function LandingPage() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={() => setActiveSection(link.id)}
                 className={cn(
                   "rounded-md px-3 py-1.5 transition-colors hover:bg-muted hover:text-foreground",
                   activeSection === link.id && "bg-navy text-white hover:bg-navy hover:text-white",
