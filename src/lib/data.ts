@@ -44,12 +44,12 @@ export const mockUser = {
 export const testProfiles = [
   {
     id: "platform-admin",
-    name: "Lucia Ionescu",
-    email: "lucia@energialocala.ro",
+    name: "Paici Lucian",
+    email: "lucian@energialocala.ro",
     role: "Platform Admin" as const,
-    communityId: "aviatiei",
+    communityId: null,
     label: "Profilul meu",
-    description: "Vede date agregate la nivel de platformă.",
+    description: "Nu este asociat unei comunități. Poate verifica toate comunitățile.",
   },
   {
     id: "community-admin",

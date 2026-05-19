@@ -1,22 +1,51 @@
+"use client";
+
 import { Activity, ArrowRight, Leaf, Users } from "lucide-react";
 import Link from "next/link";
+import { useMemo } from "react";
 import { PageHeader } from "@/components/demo/page-header";
 import { PlatformAdminOverview } from "@/components/demo/platform-admin-overview";
 import { KpiCard } from "@/components/demo/kpi-card";
 import { ProductionConsumptionChart } from "@/components/demo/energy-chart";
 import { MembersTable, AllocationTable } from "@/components/demo/tables";
 import { NotificationList } from "@/components/demo/notifications";
+import { useDemoProfile } from "@/components/demo/demo-profile-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { community, kpis } from "@/lib/data";
+import { kpis } from "@/lib/data";
 
 export default function DemoDashboardPage() {
+  const { activeProfile, selectedCommunity } = useDemoProfile();
+  const activeKpis = useMemo(
+    () =>
+      kpis.map((kpi) => {
+        if (kpi.label === "Producție lunară") {
+          return { ...kpi, value: selectedCommunity.monthlyProduction };
+        }
+        if (kpi.label === "Consum lunar") {
+          return { ...kpi, value: selectedCommunity.monthlyConsumption };
+        }
+        if (kpi.label === "Energie partajată") {
+          return { ...kpi, value: selectedCommunity.sharedEnergy };
+        }
+        if (kpi.label === "Economii estimate") {
+          return { ...kpi, value: selectedCommunity.estimatedSavings };
+        }
+        return kpi;
+      }),
+    [selectedCommunity],
+  );
+
   return (
     <>
       <PageHeader
         title="Dashboard comunitate"
-        description="Privire de ansamblu asupra energiei produse, consumate și partajate în comunitatea asociată contului curent."
+        description={
+          activeProfile.role === "Platform Admin"
+            ? "Inspectează comunitatea selectată și verifică rapid indicatorii operaționali."
+            : "Privire de ansamblu asupra energiei produse, consumate și partajate în comunitatea asociată contului curent."
+        }
         action={
           <Button asChild variant="navy">
             <Link href="/demo/reports">
@@ -29,7 +58,7 @@ export default function DemoDashboardPage() {
       <PlatformAdminOverview />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((kpi) => (
+        {activeKpis.map((kpi) => (
           <KpiCard key={kpi.label} {...kpi} />
         ))}
       </div>
@@ -44,7 +73,7 @@ export default function DemoDashboardPage() {
             <Badge variant="secondary">Mai 2026</Badge>
           </CardHeader>
           <CardContent>
-            <ProductionConsumptionChart />
+            <ProductionConsumptionChart data={selectedCommunity.energyData} />
           </CardContent>
         </Card>
         <div className="grid gap-6">
@@ -57,19 +86,19 @@ export default function DemoDashboardPage() {
                 <span className="flex items-center gap-2 text-white/70">
                   <Users className="size-4" /> Membri
                 </span>
-                <strong>{community.members}</strong>
+                <strong>{selectedCommunity.members}</strong>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-white/70">
                   <Leaf className="size-4" /> CO2 evitat
                 </span>
-                <strong>{community.co2Avoided}</strong>
+                <strong>{selectedCommunity.co2Avoided}</strong>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-white/70">
                   <Activity className="size-4" /> Status
                 </span>
-                <Badge variant="default">{community.status}</Badge>
+                <Badge variant="default">{selectedCommunity.status}</Badge>
               </div>
             </CardContent>
           </Card>

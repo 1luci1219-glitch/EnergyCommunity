@@ -5,9 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDemoProfile } from "@/components/demo/demo-profile-context";
 import { energyCommunities, platformOverview } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 export function PlatformAdminOverview() {
-  const { activeProfile } = useDemoProfile();
+  const { activeProfile, selectedCommunity, setInspectedCommunityId } = useDemoProfile();
 
   if (activeProfile.role !== "Platform Admin") {
     return null;
@@ -66,12 +67,20 @@ export function PlatformAdminOverview() {
         <CardHeader className="border-b bg-white">
           <CardTitle>Comunități găzduite de platformă</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Vizibil doar pentru profilul Platform Admin. Community Admin și Member nu văd aceste date.
+            Alege comunitatea pe care vrei să o inspectezi în dashboard.
           </p>
         </CardHeader>
         <CardContent className="grid gap-4 p-5 xl:grid-cols-3">
           {energyCommunities.map((item) => (
-            <div key={item.id} className="rounded-lg border bg-slate-50 p-4">
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setInspectedCommunityId(item.id)}
+              className={cn(
+                "rounded-lg border bg-slate-50 p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md",
+                selectedCommunity.id === item.id && "border-primary bg-mint/45 shadow-sm",
+              )}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold">{item.name}</p>
@@ -95,7 +104,10 @@ export function PlatformAdminOverview() {
                   <p className="text-xs text-muted-foreground">rapoarte</p>
                 </div>
               </div>
-            </div>
+              <div className="mt-4 border-t pt-3 text-xs font-semibold text-emerald-700">
+                {selectedCommunity.id === item.id ? "Inspectată acum" : "Inspectează comunitatea"}
+              </div>
+            </button>
           ))}
         </CardContent>
       </Card>

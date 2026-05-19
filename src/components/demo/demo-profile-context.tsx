@@ -10,6 +10,7 @@ type DemoProfileContextValue = {
   activeProfile: TestProfile;
   selectedCommunity: EnergyCommunity;
   setProfileId: (profileId: string) => void;
+  setInspectedCommunityId: (communityId: string) => void;
 };
 
 export function roleVariant(role: string) {
