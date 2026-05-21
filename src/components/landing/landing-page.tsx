@@ -170,7 +170,7 @@ function Section({
   return (
     <motion.section
       id={id}
-      className={cn(id && "scroll-mt-28", className)}
+      className={cn(id && "scroll-mt-24", className)}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
@@ -249,6 +249,19 @@ export function LandingPage() {
   const [openFaq, setOpenFaq]   = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    // Target-ul e primul div interior (după padding-ul py-24 al secțiunii)
+    const inner = section.querySelector<HTMLElement>(":scope > div");
+    const target = inner ?? section;
+    const OFFSET = 88; // nav height (68px) + 20px breathing room
+    const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+    window.scrollTo({ top, behavior: "smooth" });
+    history.pushState(null, "", `#${sectionId}`);
+    setActiveSection(sectionId);
+  };
+
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 32);
@@ -298,7 +311,7 @@ export function LandingPage() {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setActiveSection(link.id)}
+                onClick={(e) => { e.preventDefault(); scrollToSection(link.id); }}
                 className={cn(
                   "relative rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-200",
                   activeSection === link.id
@@ -409,12 +422,12 @@ export function LandingPage() {
               </Link>
             </Button>
             <Button
-              asChild
               size="lg"
               variant="outline"
               className="border-white/18 bg-white/7 text-white transition-transform hover:-translate-y-0.5 hover:bg-white/12 hover:text-white"
+              onClick={() => scrollToSection("solutie")}
             >
-              <a href="#solutie">Descoperă platforma</a>
+              Descoperă platforma
             </Button>
           </motion.div>
 
@@ -755,12 +768,12 @@ export function LandingPage() {
                 </Link>
               </Button>
               <Button
-                asChild
                 size="lg"
                 variant="outline"
                 className="border-white/20 bg-white/7 text-white hover:bg-white/14 hover:text-white"
+                onClick={() => scrollToSection("solutie")}
               >
-                <a href="#solutie">Află mai multe</a>
+                Află mai multe
               </Button>
             </div>
           </div>
