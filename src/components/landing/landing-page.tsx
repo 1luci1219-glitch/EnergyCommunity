@@ -276,51 +276,69 @@ export function LandingPage() {
   return (
     <main className="bg-background text-foreground antialiased">
 
-      {/* ══ NAV ══════════════════════════════════════════════════════════ */}
-      <header
-        className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
-          scrolled
-            ? "bg-white/92 shadow-sm shadow-slate-100/80 backdrop-blur-xl border-b border-slate-200/60"
-            : "bg-transparent border-b border-transparent",
-        )}
-      >
-        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-          <Logo className={cn("transition-colors duration-300", scrolled ? "text-foreground" : "text-white")} />
-
-          <div className={cn(
-            "hidden items-center gap-0.5 rounded-xl border p-1 text-sm font-medium backdrop-blur-sm md:flex transition-colors duration-300",
+      {/* ══ NAV — floating pill ══════════════════════════════════════════ */}
+      <header className="sticky top-0 z-50 px-4 pt-3 pb-0 sm:px-6">
+        <motion.nav
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className={cn(
+            "mx-auto flex h-14 max-w-6xl items-center justify-between rounded-2xl border px-4 transition-all duration-300 sm:px-5",
             scrolled
-              ? "border-slate-200 bg-white/80"
-              : "border-white/15 bg-white/8",
-          )}>
+              ? "border-slate-200/90 bg-white/95 shadow-xl shadow-slate-200/50 backdrop-blur-2xl"
+              : "border-white/12 bg-white/7 shadow-lg shadow-black/10 backdrop-blur-xl",
+          )}
+        >
+          {/* Logo */}
+          <Logo size="md" />
+
+          {/* Links */}
+          <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setActiveSection(link.id)}
                 className={cn(
-                  "rounded-lg px-3.5 py-1.5 transition-all duration-150",
+                  "relative rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-200",
                   activeSection === link.id
-                    ? scrolled ? "bg-navy text-white" : "bg-white text-navy shadow-sm"
-                    : scrolled ? "text-muted-foreground hover:bg-muted hover:text-foreground" : "text-white/70 hover:bg-white/10 hover:text-white",
+                    ? scrolled
+                      ? "bg-navy/5 text-navy font-semibold"
+                      : "bg-white/12 text-white font-semibold"
+                    : scrolled
+                      ? "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                      : "text-white/60 hover:bg-white/10 hover:text-white",
                 )}
               >
                 {link.label}
+                {activeSection === link.id && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className={cn(
+                      "absolute -bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full",
+                      scrolled ? "bg-primary" : "bg-white",
+                    )}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
               </a>
             ))}
           </div>
 
+          {/* CTA */}
           <Button
             asChild
             size="sm"
-            className="gap-1.5 px-4 shadow-sm transition-transform hover:-translate-y-0.5"
+            className={cn(
+              "gap-1.5 rounded-xl px-4 font-semibold shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg",
+              !scrolled && "shadow-primary/20",
+            )}
           >
             <Link href="/demo">
               Demo live <ArrowRight className="size-3.5" />
             </Link>
           </Button>
-        </nav>
+        </motion.nav>
       </header>
 
       {/* ══ HERO + VIDEO — secțiune dark unificată ═══════════════════════ */}
