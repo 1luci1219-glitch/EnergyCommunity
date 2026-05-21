@@ -170,7 +170,7 @@ function Section({
   return (
     <motion.section
       id={id}
-      className={cn(id && "scroll-mt-20", className)}
+      className={cn(id && "scroll-mt-28", className)}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
