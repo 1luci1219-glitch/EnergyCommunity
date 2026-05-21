@@ -820,34 +820,55 @@ export function LandingPage() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="video" className="bg-white py-24 sm:py-28">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
+      <AnimatedSection id="video" className="py-24 sm:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
             <Badge variant="navy">Video prezentare</Badge>
             <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
-              Vezi platforma în acțiune.
+              Platforma în acțiune.
             </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              Un scurt walkthrough al platformei EnergiaLocală — de la dashboard la alocări și rapoarte.
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              Un walkthrough complet — dashboard, membri, alocări și rapoarte.
             </p>
           </div>
+
           <motion.div
-            className="relative mt-12 overflow-hidden rounded-2xl border border-slate-200 shadow-2xl shadow-slate-200/60"
-            initial={{ opacity: 0, y: 24 }}
+            className="relative mt-14"
+            initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="absolute inset-0 -z-10 rounded-2xl bg-primary/8 blur-3xl" />
-            <video
-              className="w-full rounded-2xl"
-              controls
-              preload="metadata"
-              poster=""
-            >
-              <source src="/prezentare.mp4" type="video/mp4" />
-              Browser-ul tău nu suportă redarea video.
-            </video>
+            {/* Ambient glow */}
+            <div className="absolute -inset-8 rounded-[3rem] bg-primary/12 blur-3xl" />
+
+            {/* Browser chrome frame */}
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xl shadow-slate-300/50 ring-1 ring-slate-100">
+              {/* Browser top bar */}
+              <div className="flex h-10 shrink-0 items-center gap-2 border-b border-slate-200 bg-slate-50 px-4">
+                <span className="size-3 rounded-full bg-red-300" />
+                <span className="size-3 rounded-full bg-amber-300" />
+                <span className="size-3 rounded-full bg-emerald-400" />
+                <div className="mx-auto flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-4 py-1 text-xs text-slate-400 shadow-sm">
+                  <span className="size-1.5 rounded-full bg-emerald-400" />
+                  energialocala.ro
+                </div>
+              </div>
+
+              {/* Video — cropped to hide bottom watermark */}
+              <div className="overflow-hidden bg-slate-900">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="block w-full"
+                  style={{ marginBottom: "-8%", display: "block" }}
+                >
+                  <source src="/prezentare.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
           </motion.div>
         </div>
       </AnimatedSection>
