@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { href: "#solutie", label: "Soluție", id: "solutie" },
   { href: "#functionalitati", label: "Funcționalități", id: "functionalitati" },
+  { href: "#video", label: "Video", id: "video" },
   { href: "#showcase", label: "Platformă", id: "showcase" },
   { href: "#preturi", label: "Prețuri", id: "preturi" },
   { href: "#faq", label: "FAQ", id: "faq" },
@@ -816,6 +817,38 @@ export function LandingPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection id="video" className="bg-white py-24 sm:py-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge variant="navy">Video prezentare</Badge>
+            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
+              Vezi platforma în acțiune.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              Un scurt walkthrough al platformei EnergiaLocală — de la dashboard la alocări și rapoarte.
+            </p>
+          </div>
+          <motion.div
+            className="relative mt-12 overflow-hidden rounded-2xl border border-slate-200 shadow-2xl shadow-slate-200/60"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="absolute inset-0 -z-10 rounded-2xl bg-primary/8 blur-3xl" />
+            <video
+              className="w-full rounded-2xl"
+              controls
+              preload="metadata"
+              poster=""
+            >
+              <source src="/prezentare.mp4" type="video/mp4" />
+              Browser-ul tău nu suportă redarea video.
+            </video>
+          </motion.div>
         </div>
       </AnimatedSection>
 
