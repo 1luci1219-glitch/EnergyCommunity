@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -248,6 +248,19 @@ export function LandingPage() {
   const [activeSection, setActiveSection] = useState("solutie");
   const [openFaq, setOpenFaq]   = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [videoPaused, setVideoPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleVideoEnded = () => {
+    setVideoPaused(true);
+    setTimeout(() => {
+      setVideoPaused(false);
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        void videoRef.current.play();
+      }
+    }, 3500); // 3.5 secunde pauză pe ultimul cadru
+  };
 
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
@@ -484,17 +497,34 @@ export function LandingPage() {
               </div>
 
               {/* Video – crop watermark */}
-              <div className="overflow-hidden bg-navy">
+              <div className="relative overflow-hidden bg-navy">
                 <video
+                  ref={videoRef}
                   autoPlay
                   muted
-                  loop
                   playsInline
+                  onEnded={handleVideoEnded}
                   className="block w-full"
                   style={{ marginBottom: "-8%" }}
                 >
                   <source src="/prezentare.mp4" type="video/mp4" />
                 </video>
+
+                {/* Overlay pauză – apare 3.5 s pe ultimul cadru */}
+                <motion.div
+                  initial={false}
+                  animate={{ opacity: videoPaused ? 1 : 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-navy/60 backdrop-blur-sm"
+                >
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold text-white backdrop-blur">
+                    <span className="relative flex size-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                      <span className="relative inline-flex size-2 rounded-full bg-primary" />
+                    </span>
+                    Alăturați-vă comunității noastre
+                  </span>
+                </motion.div>
               </div>
             </div>
           </motion.div>
