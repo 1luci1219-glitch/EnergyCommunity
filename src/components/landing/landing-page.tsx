@@ -69,7 +69,7 @@ const comparison = [
     ],
   },
   {
-    eyebrow: "Cu EnergiaLocală",
+    eyebrow: "Cu CER Bridge",
     title: "O singură vedere operațională",
     icon: Sparkles,
     items: [
@@ -286,7 +286,7 @@ export function LandingPage() {
             "mx-auto flex h-14 max-w-6xl items-center justify-between rounded-2xl border px-4 transition-all duration-300 sm:px-5",
             scrolled
               ? "border-slate-200/90 bg-white/95 shadow-xl shadow-slate-200/50 backdrop-blur-2xl"
-              : "border-white/12 bg-white/7 shadow-lg shadow-black/10 backdrop-blur-xl",
+              : "border-white/20 bg-navy/55 shadow-xl shadow-black/25 backdrop-blur-xl",
           )}
         >
           {/* Logo */}
@@ -465,7 +465,7 @@ export function LandingPage() {
                 </div>
                 <div className="mx-auto flex items-center gap-2 rounded-md bg-white/5 px-5 py-1 text-[11px] font-medium text-white/38">
                   <span className="size-1.5 rounded-full bg-primary/90" />
-                  energialocala.ro
+                  cerbridge.ro
                 </div>
                 <div className="size-4" />
               </div>
@@ -524,7 +524,7 @@ export function LandingPage() {
             </h2>
             <p className="mt-5 text-base leading-7 text-muted-foreground">
               Datele energetice, membrii și alocările sunt adesea fragmentate.
-              EnergiaLocală le centralizează într-un singur spațiu de lucru.
+              CER Bridge le centralizează într-un singur spațiu de lucru.
             </p>
           </div>
 
@@ -821,7 +821,7 @@ export function LandingPage() {
           </div>
 
           <div className="mt-10 flex flex-col gap-3 border-t border-slate-100 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <span>© 2026 EnergiaLocală · MVP demonstrativ</span>
+            <span>© 2026 CER Bridge · MVP demonstrativ</span>
             <div className="flex gap-5">
               <span>Fără autentificare</span>
               <span>Fără API-uri externe</span>

@@ -31,7 +31,7 @@ export default function SettingsPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="admin">Administrator</Label>
-              <Input id="admin" defaultValue="Asociația Energia Locală București" />
+              <Input id="admin" defaultValue="Asociația CER Bridge București" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="area">Zonă</Label>

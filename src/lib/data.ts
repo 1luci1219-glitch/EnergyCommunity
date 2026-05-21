@@ -36,7 +36,7 @@ export const userRoles = [
 
 export const mockUser = {
   name: "Elena Popescu",
-  email: "elena@energialocala.ro",
+  email: "elena@cerbridge.ro",
   role: "Community Admin" as const,
   communityId: "aviatiei",
 };
@@ -45,7 +45,7 @@ export const testProfiles = [
   {
     id: "platform-admin",
     name: "Paici Lucian",
-    email: "lucian@energialocala.ro",
+    email: "lucian@cerbridge.ro",
     role: "Platform Admin" as const,
     communityId: null,
     label: "Profilul meu",

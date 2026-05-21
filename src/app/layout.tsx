@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "EnergiaLocală | Platformă SaaS pentru comunități de energie",
+  title: "CER Bridge | Platformă SaaS pentru comunități de energie",
   description:
     "Demo vizual pentru administrarea comunităților de energie din România.",
 };
