@@ -14,6 +14,9 @@ import {
   LineChart,
   Sparkles,
   Users,
+  Zap,
+  BarChart3,
+  ShieldCheck,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Badge } from "@/components/ui/badge";
@@ -22,12 +25,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { features } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
+/* ─── Date statice ──────────────────────────────────────────────────── */
+
 const navLinks = [
-  { href: "#solutie", label: "Soluție", id: "solutie" },
+  { href: "#solutie",       label: "Soluție",         id: "solutie" },
   { href: "#functionalitati", label: "Funcționalități", id: "functionalitati" },
-  { href: "#video", label: "Video", id: "video" },
-  { href: "#preturi", label: "Prețuri", id: "preturi" },
-  { href: "#faq", label: "FAQ", id: "faq" },
+  { href: "#preturi",       label: "Prețuri",         id: "preturi" },
+  { href: "#faq",           label: "FAQ",             id: "faq" },
+];
+
+const heroChips = [
+  { icon: Zap,         label: "Dashboard complet" },
+  { icon: BarChart3,   label: "Alocare transparentă" },
+  { icon: FileText,    label: "Rapoarte instant" },
+  { icon: Leaf,        label: "Impact CO₂" },
+  { icon: ShieldCheck, label: "Multi-comunitate" },
+];
+
+const trustItems = [
+  "Primării",
+  "Cooperative",
+  "Asociații",
+  "Prosumatori",
+  "IMM-uri",
 ];
 
 const comparison = [
@@ -55,25 +75,28 @@ const comparison = [
 
 const steps = [
   {
+    num: "01",
     title: "Definești comunitatea",
     text: "Configurezi membri, roluri și parametri de lucru într-un spațiu comun.",
     icon: Users,
   },
   {
+    num: "02",
     title: "Urmărești energia",
     text: "Monitorizezi producția, consumul și energia partajată cu grafice clare.",
     icon: LineChart,
   },
   {
+    num: "03",
     title: "Prezinți impactul",
-    text: "Transformi economiile, alocările și CO2 evitat în rapoarte ușor de citit.",
+    text: "Transformi economiile, alocările și CO₂ evitat în rapoarte ușor de citit.",
     icon: Leaf,
   },
 ];
 
 const pricing = [
   {
-    name: "Pilot comunitate",
+    name: "Pilot",
     badge: "Validare",
     text: "Pentru workshop-uri, primii membri și discuții cu parteneri locali.",
     items: ["Dashboard demonstrativ", "Date mock realiste", "Rapoarte lunare preview"],
@@ -89,7 +112,7 @@ const pricing = [
   {
     name: "Partner",
     badge: "Portofolii",
-    text: "Pentru consultanți, autorități și organizații care coordonează mai multe proiecte.",
+    text: "Pentru consultanți, autorități și organizații cu mai multe proiecte.",
     items: ["Multi-comunitate", "Branding dedicat", "Suport prioritar"],
     featured: false,
   },
@@ -114,12 +137,14 @@ const faqs = [
   {
     question: "Se poate extinde către integrări DSO?",
     answer:
-      "Da, dar doar ca direcție viitoare. În acest moment, accentul este pe demo vizual și claritate operațională.",
+      "Da, dar doar ca direcție viitoare. Acum accentul este pe demo vizual și claritate operațională.",
   },
 ];
 
+/* ─── Componente helper ─────────────────────────────────────────────── */
+
 const sectionVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -135,11 +160,11 @@ function AnimatedSection({
   return (
     <motion.section
       id={id}
-      className={cn(id && "scroll-mt-24", className)}
+      className={cn(id && "scroll-mt-20", className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       variants={sectionVariants}
     >
       {children}
@@ -151,22 +176,31 @@ function FeatureCard({
   title,
   description,
   icon: Icon,
+  index,
 }: {
   title: string;
   description: string;
   icon: LucideIcon;
+  index: number;
 }) {
   return (
     <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 250, damping: 18 }}
-      className="group rounded-xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-xl hover:shadow-slate-200/70"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -5 }}
+      className="group relative overflow-hidden rounded-2xl border bg-white p-7 shadow-sm transition-shadow hover:shadow-lg hover:shadow-slate-200/80"
     >
-      <span className="flex size-11 items-center justify-center rounded-lg bg-mint text-emerald-800 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-        <Icon className="size-5" />
-      </span>
-      <h3 className="mt-6 text-lg font-semibold tracking-normal">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
+      {/* subtle hover gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-primary/0 transition-all duration-500 group-hover:from-primary/3 group-hover:to-transparent" />
+      <div className="relative">
+        <div className="flex size-12 items-center justify-center rounded-xl bg-mint text-emerald-800 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+          <Icon className="size-5" />
+        </div>
+        <h3 className="mt-5 text-base font-semibold tracking-normal">{title}</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+      </div>
     </motion.div>
   );
 }
@@ -187,15 +221,15 @@ function FAQItem({
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-5 px-5 py-5 text-left transition-colors hover:bg-slate-50"
+        className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left transition-colors hover:bg-slate-50/80"
       >
-        <span className="flex items-center gap-3 text-base font-semibold">
-          <CircleHelp className="size-5 text-emerald-700" />
+        <span className="flex items-center gap-3 text-[0.95rem] font-semibold leading-snug">
+          <CircleHelp className="size-4.5 shrink-0 text-emerald-600" />
           {question}
         </span>
         <ChevronDown
           className={cn(
-            "size-5 shrink-0 text-muted-foreground transition-transform",
+            "size-4.5 shrink-0 text-muted-foreground transition-transform duration-200",
             open && "rotate-180",
           )}
         />
@@ -203,147 +237,212 @@ function FAQItem({
       <motion.div
         initial={false}
         animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
-        transition={{ duration: 0.24 }}
+        transition={{ duration: 0.22, ease: "easeInOut" }}
         className="overflow-hidden"
       >
-        <p className="px-14 pb-5 text-sm leading-6 text-muted-foreground">{answer}</p>
+        <p className="px-16 pb-5 text-sm leading-7 text-muted-foreground">{answer}</p>
       </motion.div>
     </div>
   );
 }
 
+/* ─── Pagina principală ─────────────────────────────────────────────── */
+
 export function LandingPage() {
   const [activeSection, setActiveSection] = useState("solutie");
-  const [openFaq, setOpenFaq] = useState(0);
+  const [openFaq, setOpenFaq]  = useState(0);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const updateActiveSection = () => {
-      const anchorY = window.scrollY + 112;
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      const anchorY = window.scrollY + 120;
       const sections = navLinks
-        .map((link) => {
-          const element = document.getElementById(link.id);
-          return element ? { id: link.id, top: element.offsetTop } : null;
+        .map((l) => {
+          const el = document.getElementById(l.id);
+          return el ? { id: l.id, top: el.offsetTop } : null;
         })
-        .filter((section): section is { id: string; top: number } => Boolean(section))
-        .sort((a, b) => a.top - b.top);
+        .filter(Boolean) as { id: string; top: number }[];
 
       const current =
-        sections.findLast((section) => section.top <= anchorY) ?? sections[0];
+        sections
+          .sort((a, b) => a.top - b.top)
+          .findLast((s) => s.top <= anchorY) ?? sections[0];
 
       if (current) setActiveSection(current.id);
     };
 
-    updateActiveSection();
-    window.addEventListener("scroll", updateActiveSection, { passive: true });
-    window.addEventListener("resize", updateActiveSection);
-    return () => {
-      window.removeEventListener("scroll", updateActiveSection);
-      window.removeEventListener("resize", updateActiveSection);
-    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <main className="bg-background text-foreground">
+    <main className="bg-background text-foreground antialiased">
 
-      {/* ── NAV ── */}
-      <nav className="sticky top-0 z-50 border-b border-white/60 bg-white/82 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Logo />
-          <div className="hidden items-center gap-1 rounded-lg border bg-white/70 p-1 text-sm font-medium text-muted-foreground shadow-sm md:flex">
+      {/* ══ NAV ══════════════════════════════════════════════════════════ */}
+      <header
+        className={cn(
+          "sticky top-0 z-50 transition-all duration-300",
+          scrolled
+            ? "border-b bg-white/90 shadow-sm shadow-slate-100 backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent",
+        )}
+      >
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Logo className={cn(scrolled ? "text-foreground" : "text-white")} />
+
+          <div className="hidden items-center gap-0.5 rounded-xl border border-white/15 bg-white/8 p-1 text-sm font-medium backdrop-blur-sm md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setActiveSection(link.id)}
                 className={cn(
-                  "rounded-md px-3 py-1.5 transition-colors hover:bg-muted hover:text-foreground",
-                  activeSection === link.id &&
-                    "bg-navy text-white hover:bg-navy hover:text-white",
+                  "rounded-lg px-3.5 py-1.5 transition-all duration-150",
+                  activeSection === link.id
+                    ? "bg-white text-navy shadow-sm"
+                    : "text-white/70 hover:bg-white/10 hover:text-white",
                 )}
               >
                 {link.label}
               </a>
             ))}
           </div>
-          <Button asChild className="shadow-sm transition-transform hover:-translate-y-0.5">
+
+          <Button
+            asChild
+            size="sm"
+            className="gap-1.5 shadow-sm transition-transform hover:-translate-y-0.5"
+          >
             <Link href="/demo">
-              Vezi demo <ArrowRight />
+              Demo live <ArrowRight className="size-3.5" />
             </Link>
           </Button>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      {/* ── HERO + VIDEO — o singură secțiune dark ── */}
+      {/* ══ HERO + VIDEO ═══════════════════════════════════════════════ */}
       <section className="relative overflow-hidden bg-navy text-white">
-        {/* Decorații fundal */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_-15%,rgba(18,214,107,0.16),transparent_42%),radial-gradient(circle_at_5%_85%,rgba(18,214,107,0.07),transparent_38%)]" />
-        <div className="absolute inset-0 opacity-[0.10] [background-image:linear-gradient(#ffffff_1px,transparent_1px),linear-gradient(90deg,#ffffff_1px,transparent_1px)] [background-size:52px_52px]" />
 
-        {/* Hero text — centrat */}
-        <motion.div
-          className="relative mx-auto max-w-4xl px-4 pb-14 pt-24 text-center sm:px-6 lg:px-8"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <Badge variant="default">SaaS românesc pentru energie locală</Badge>
-          <h1 className="mt-6 text-5xl font-semibold leading-[1.06] tracking-normal sm:text-6xl lg:text-7xl">
-            Administrează comunități energetice într-un singur dashboard.
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/70">
-            O platformă completă pentru gestionarea membrilor, alocărilor și rapoartelor —
-            clară, vizuală și ușor de prezentat oricărui stakeholder.
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        {/* — Fundal — */}
+        <div className="absolute inset-0">
+          {/* Grid */}
+          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:48px_48px]" />
+          {/* Glow-uri */}
+          <div className="absolute -top-32 right-[-10%] h-[700px] w-[700px] rounded-full bg-primary/20 blur-[120px]" />
+          <div className="absolute bottom-0 left-[-5%] h-[400px] w-[500px] rounded-full bg-primary/10 blur-[100px]" />
+        </div>
+
+        {/* — Hero text — */}
+        <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-28 text-center sm:px-6 lg:px-8">
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-primary" />
+              Platformă SaaS pentru energie locală
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="mx-auto mt-6 max-w-4xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4.5rem]"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Administrează comunități energetice{" "}
+            <span className="bg-gradient-to-r from-primary to-emerald-300 bg-clip-text text-transparent">
+              fără complexitate.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/65"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+          >
+            O platformă completă pentru membrii, alocările și rapoartele comunității —
+            clară, vizuală și gata de prezentat oricărui stakeholder.
+          </motion.p>
+
+          <motion.div
+            className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+          >
             <Button
               asChild
               size="lg"
-              className="transition-transform hover:-translate-y-0.5"
+              className="gap-2 px-7 shadow-lg shadow-primary/25 transition-transform hover:-translate-y-0.5"
             >
               <Link href="/demo">
-                Încearcă demo-ul <ArrowRight />
+                Încearcă demo-ul <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-white/20 bg-white/8 text-white transition-transform hover:-translate-y-0.5 hover:bg-white/14 hover:text-white"
+              className="border-white/18 bg-white/7 text-white transition-transform hover:-translate-y-0.5 hover:bg-white/12 hover:text-white"
             >
               <a href="#solutie">Descoperă platforma</a>
             </Button>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Video — seamless sub hero, același bg dark */}
-        <div
-          id="video"
-          className="relative scroll-mt-24 px-4 pb-28 sm:px-6 lg:px-8"
-        >
+          {/* Chips functionalitati */}
+          <motion.div
+            className="mt-10 flex flex-wrap items-center justify-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.38 }}
+          >
+            {heroChips.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="flex items-center gap-1.5 rounded-full border border-white/12 bg-white/6 px-3.5 py-1.5 text-xs font-medium text-white/60"
+              >
+                <Icon className="size-3.5 text-primary" />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* — Video — */}
+        <div className="relative px-4 pb-28 sm:px-6 lg:px-8">
           <motion.div
             className="relative mx-auto max-w-5xl"
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 48 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Glow ambiental */}
-            <div className="absolute -inset-8 rounded-[3rem] bg-primary/14 blur-3xl" />
+            {/* Glow video */}
+            <div className="absolute -inset-8 rounded-[3rem] bg-primary/18 blur-3xl" />
 
-            {/* Browser chrome frame */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl shadow-black/50 ring-1 ring-white/5">
-              {/* Top bar */}
-              <div className="flex h-10 shrink-0 items-center gap-2 border-b border-white/8 bg-slate-800/90 px-4">
-                <span className="size-3 rounded-full bg-red-400/55" />
-                <span className="size-3 rounded-full bg-amber-400/55" />
-                <span className="size-3 rounded-full bg-emerald-400/55" />
-                <div className="mx-auto flex items-center gap-1.5 rounded-md bg-slate-700/50 px-5 py-1 text-xs text-slate-400">
-                  <span className="size-1.5 rounded-full bg-emerald-400" />
+            {/* Frame browser */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/60 ring-1 ring-white/5">
+              {/* Chrome bar */}
+              <div className="flex h-10 shrink-0 items-center gap-2 border-b border-white/8 bg-[#1a2235] px-4">
+                <div className="flex gap-1.5">
+                  <span className="size-3 rounded-full bg-[#ff5f57]" />
+                  <span className="size-3 rounded-full bg-[#febc2e]" />
+                  <span className="size-3 rounded-full bg-[#28c840]" />
+                </div>
+                <div className="mx-auto flex items-center gap-2 rounded-md bg-white/6 px-5 py-1 text-[11px] font-medium text-white/40">
+                  <span className="size-1.5 rounded-full bg-primary/80" />
                   energialocala.ro
                 </div>
               </div>
 
-              {/* Video cu crop watermark la -8% */}
-              <div className="overflow-hidden bg-slate-900">
+              {/* Video – crop watermark bottom */}
+              <div className="overflow-hidden bg-navy">
                 <video
                   autoPlay
                   muted
@@ -360,67 +459,143 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── SOLUȚIE ── */}
-      <AnimatedSection id="solutie" className="py-24 sm:py-28">
+      {/* ══ TRUST STRIP ═══════════════════════════════════════════════ */}
+      <div className="border-b bg-white py-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Construit pentru
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 sm:justify-end">
+              {trustItems.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border bg-slate-50 px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-primary/40 hover:bg-mint hover:text-emerald-800"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ SOLUȚIE ══════════════════════════════════════════════════ */}
+      <AnimatedSection id="solutie" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <Badge variant="navy">Claritate operațională</Badge>
-            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
-              Comunitățile de energie au nevoie de claritate înainte de complexitate.
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <Badge variant="navy">Problema reală</Badge>
+            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              Claritate înainte de complexitate.
             </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              Datele energetice, membrii și alocările sunt adesea împrăștiate în tabele,
-              documente și procese manuale. EnergiaLocală le aduce într-un singur loc.
+            <p className="mt-5 text-base leading-7 text-muted-foreground">
+              Datele energetice, membrii și alocările sunt adesea împrăștiate în
+              tabele și procese manuale. EnergiaLocală le centralizează.
             </p>
           </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+
+          <div className="grid gap-5 lg:grid-cols-2">
             {comparison.map((card, index) => (
               <motion.div
                 key={card.eyebrow}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 280, damping: 20 }}
                 className={cn(
-                  "rounded-2xl border p-7 shadow-sm",
+                  "rounded-2xl border p-8 shadow-sm",
                   index === 1
-                    ? "bg-navy text-white shadow-xl shadow-navy/15"
+                    ? "bg-navy text-white shadow-xl shadow-navy/20"
                     : "bg-white",
                 )}
               >
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between">
                   <Badge variant={index === 1 ? "default" : "secondary"}>
                     {card.eyebrow}
                   </Badge>
                   <span
                     className={cn(
-                      "flex size-11 items-center justify-center rounded-lg",
-                      index === 1
-                        ? "bg-white/10 text-primary"
-                        : "bg-mint text-emerald-800",
+                      "flex size-10 items-center justify-center rounded-xl",
+                      index === 1 ? "bg-white/10 text-primary" : "bg-mint text-emerald-800",
                     )}
                   >
                     <card.icon className="size-5" />
                   </span>
                 </div>
-                <h3 className="mt-6 text-2xl font-semibold tracking-normal">
+                <h3 className="mt-7 text-xl font-semibold leading-snug tracking-normal">
                   {card.title}
                 </h3>
-                <div className="mt-6 grid gap-3">
+                <ul className="mt-6 space-y-3.5">
                   {card.items.map((item) => (
-                    <div key={item} className="flex items-center gap-3 text-sm">
+                    <li key={item} className="flex items-center gap-3 text-sm">
                       <CheckCircle2
                         className={cn(
-                          "size-4",
-                          index === 1 ? "text-primary" : "text-emerald-700",
+                          "size-4 shrink-0",
+                          index === 1 ? "text-primary" : "text-emerald-600",
                         )}
                       />
-                      <span
-                        className={
-                          index === 1 ? "text-white/76" : "text-muted-foreground"
-                        }
-                      >
+                      <span className={index === 1 ? "text-white/72" : "text-muted-foreground"}>
                         {item}
                       </span>
-                    </div>
+                    </li>
                   ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ══ FUNCȚIONALITĂȚI ══════════════════════════════════════════ */}
+      <AnimatedSection id="functionalitati" className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-xl">
+              <Badge variant="navy">Ce oferă platforma</Badge>
+              <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+                Tot ce ai nevoie, nimic în plus.
+              </h2>
+            </div>
+            <p className="max-w-sm text-sm leading-7 text-muted-foreground lg:text-right">
+              Fiecare modul este construit pentru validare rapidă cu stakeholderi
+              locali — fără setup tehnic.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => (
+              <FeatureCard key={feature.title} {...feature} index={i} />
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* ══ CUM FUNCȚIONEAZĂ ═════════════════════════════════════════ */}
+      <AnimatedSection className="py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-16 max-w-2xl text-center">
+            <Badge variant="secondary">Proces</Badge>
+            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              De la configurare la impact în 3 pași.
+            </h2>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.12, duration: 0.55 }}
+                className="relative overflow-hidden rounded-2xl border bg-white p-8 shadow-sm"
+              >
+                {/* Big background number */}
+                <span className="absolute right-5 top-3 select-none text-7xl font-black leading-none text-slate-100">
+                  {step.num}
+                </span>
+                <div className="relative">
+                  <div className="flex size-12 items-center justify-center rounded-xl bg-navy text-white shadow-md shadow-navy/20">
+                    <step.icon className="size-5" />
+                  </div>
+                  <h3 className="mt-6 text-lg font-semibold tracking-normal">{step.title}</h3>
+                  <p className="mt-2.5 text-sm leading-6 text-muted-foreground">{step.text}</p>
                 </div>
               </motion.div>
             ))}
@@ -428,98 +603,49 @@ export function LandingPage() {
         </div>
       </AnimatedSection>
 
-      {/* ── FUNCȚIONALITĂȚI ── */}
-      <AnimatedSection id="functionalitati" className="bg-white py-24 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <Badge variant="navy">Funcționalități</Badge>
-              <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
-                O platformă care arată ca un produs real.
-              </h2>
-            </div>
-            <p className="max-w-md text-sm leading-6 text-muted-foreground">
-              Fiecare modul este construit pentru prezentări, decizii și validare rapidă
-              cu stakeholderi locali.
+      {/* ══ PREȚURI ══════════════════════════════════════════════════ */}
+      <AnimatedSection id="preturi" className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <Badge variant="secondary">Prețuri</Badge>
+            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              Pachete pentru fiecare etapă.
+            </h2>
+            <p className="mt-5 text-base leading-7 text-muted-foreground">
+              De la primele conversații cu primăria, până la operarea completă.
             </p>
           </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <FeatureCard key={feature.title} {...feature} />
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
 
-      {/* ── CUM FUNCȚIONEAZĂ ── */}
-      <AnimatedSection className="py-24 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge variant="secondary">Cum funcționează</Badge>
-            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
-              De la comunitate la impact, fără zgomot operațional.
-            </h2>
-          </div>
-          <div className="relative mt-14 grid gap-5 lg:grid-cols-3">
-            <div className="absolute left-1/2 top-12 hidden h-px w-[66%] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/60 to-transparent lg:block" />
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="relative rounded-2xl border bg-white p-7 shadow-sm"
-              >
-                <span className="flex size-14 items-center justify-center rounded-xl bg-navy text-white shadow-lg shadow-navy/15">
-                  <step.icon className="size-6" />
-                </span>
-                <span className="mt-6 inline-flex rounded-md bg-mint px-2.5 py-1 text-xs font-semibold text-emerald-800">
-                  Pasul {index + 1}
-                </span>
-                <h3 className="mt-4 text-xl font-semibold tracking-normal">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                  {step.text}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
-
-      {/* ── PREȚURI ── */}
-      <AnimatedSection id="preturi" className="bg-white py-24 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge variant="secondary">Prețuri</Badge>
-            <h2 className="mt-5 text-4xl font-semibold leading-tight tracking-normal sm:text-5xl">
-              Pachete pentru pilot, operare și parteneriate.
-            </h2>
-          </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {pricing.map((plan) => (
+          <div className="grid gap-5 lg:grid-cols-3">
+            {pricing.map((plan, i) => (
               <motion.div
                 key={plan.name}
-                whileHover={{ y: -6 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                whileHover={{ y: -5 }}
                 transition={{ type: "spring", stiffness: 260, damping: 18 }}
               >
                 <Card
                   className={cn(
-                    "h-full overflow-hidden shadow-sm",
-                    plan.featured &&
-                      "border-primary bg-gradient-to-b from-white to-mint/45 shadow-xl shadow-emerald-100",
+                    "relative h-full overflow-hidden shadow-sm",
+                    plan.featured
+                      ? "border-primary/60 bg-gradient-to-b from-white via-white to-mint/30 shadow-xl shadow-emerald-100/60"
+                      : "bg-white",
                   )}
                 >
-                  <CardHeader>
+                  {plan.featured && (
+                    <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent" />
+                  )}
+                  <CardHeader className="pb-4">
                     <div className="flex items-center justify-between">
-                      <CardTitle>{plan.name}</CardTitle>
+                      <CardTitle className="text-lg">{plan.name}</CardTitle>
                       <Badge variant={plan.featured ? "default" : "secondary"}>
                         {plan.badge}
                       </Badge>
                     </div>
-                    <p className="pt-4 text-sm leading-6 text-muted-foreground">
+                    <p className="pt-3 text-sm leading-6 text-muted-foreground">
                       {plan.text}
                     </p>
                   </CardHeader>
@@ -527,15 +653,18 @@ export function LandingPage() {
                     <Button
                       asChild
                       variant={plan.featured ? "default" : "outline"}
-                      className="mb-7 w-full"
+                      className={cn(
+                        "mb-7 w-full",
+                        plan.featured && "shadow-sm shadow-primary/20",
+                      )}
                     >
                       <Link href="/demo">Vezi demo</Link>
                     </Button>
                     <ul className="space-y-3">
                       {plan.items.map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="size-4 text-emerald-700" />
-                          {item}
+                        <li key={item} className="flex items-center gap-2.5 text-sm">
+                          <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+                          <span className="text-muted-foreground">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -547,16 +676,16 @@ export function LandingPage() {
         </div>
       </AnimatedSection>
 
-      {/* ── FAQ ── */}
-      <AnimatedSection id="faq" className="py-24 sm:py-28">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+      {/* ══ FAQ ══════════════════════════════════════════════════════ */}
+      <AnimatedSection id="faq" className="py-24 sm:py-32">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
             <Badge variant="navy">FAQ</Badge>
-            <h2 className="mt-5 text-4xl font-semibold tracking-normal">
+            <h2 className="mt-5 text-4xl font-semibold tracking-tight">
               Întrebări frecvente
             </h2>
           </div>
-          <div className="mt-10 overflow-hidden rounded-2xl border bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
             {faqs.map((faq, index) => (
               <FAQItem
                 key={faq.question}
@@ -569,63 +698,68 @@ export function LandingPage() {
         </div>
       </AnimatedSection>
 
-      {/* ── CTA BANNER ── */}
+      {/* ══ CTA BANNER ═══════════════════════════════════════════════ */}
       <section className="bg-background px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl bg-navy px-6 py-14 text-white shadow-2xl shadow-navy/20 sm:px-10 lg:px-14">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl font-semibold tracking-normal sm:text-5xl">
-                Pregătiți pentru o demonstrație?
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-navy px-8 py-16 text-white shadow-2xl shadow-navy/25 sm:px-12 lg:px-16">
+          {/* Glow dreapta */}
+          <div className="absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(circle_at_80%_40%,rgba(18,214,107,0.15),transparent_60%)]" />
+          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-xl">
+              <h2 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+                Gata să explorezi platforma?
               </h2>
-              <p className="mt-4 text-lg leading-8 text-white/68">
-                Intră în demo și explorează platforma în detaliu.
+              <p className="mt-4 text-base leading-7 text-white/62">
+                Demo-ul este disponibil instant, fără cont și fără date reale.
               </p>
             </div>
             <Button
               asChild
               size="lg"
-              className="shrink-0 transition-transform hover:-translate-y-0.5"
+              className="shrink-0 gap-2 px-8 shadow-lg shadow-primary/30 transition-transform hover:-translate-y-0.5"
             >
               <Link href="/demo">
-                Încearcă demo-ul <ArrowRight />
+                Încearcă demo-ul <ArrowRight className="size-4" />
               </Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t bg-white py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div>
+      {/* ══ FOOTER ═══════════════════════════════════════════════════ */}
+      <footer className="border-t bg-white py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="max-w-xs">
               <Logo />
-              <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-                Demo MVP pentru comunități energetice din România. Doar frontend, doar
-                date mock.
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Demo MVP pentru comunități energetice din România.
+                Doar frontend, doar date mock.
               </p>
             </div>
-            <div className="flex gap-3">
-              {["in", "x", "yt"].map((item) => (
-                <span
-                  key={item}
-                  className="flex size-9 items-center justify-center rounded-md border text-xs font-semibold text-muted-foreground"
+            <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">Navigare</span>
+              {navLinks.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="transition-colors hover:text-foreground"
                 >
-                  {item}
-                </span>
+                  {l.label}
+                </a>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-3 border-t pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <span>EnergiaLocală · MVP demonstrativ</span>
-            <div className="flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <span>© 2026 EnergiaLocală · MVP demonstrativ</span>
+            <div className="flex gap-5">
               <span>Fără autentificare</span>
-              <span>Fără API-uri</span>
+              <span>Fără API-uri externe</span>
               <span>Fără date reale</span>
             </div>
           </div>
         </div>
       </footer>
+
     </main>
   );
 }
